@@ -110,7 +110,7 @@ export default function Home() {
     try {
       let res;
       if (isSearch && query.trim()) {
-        res = await axios.get(`${API_BASE}/search/`, {
+        res = await axios.get(`${API_BASE}/search`, {
           params: {
             q: query,
             category: category || undefined,
@@ -121,7 +121,7 @@ export default function Home() {
         });
         setOpportunities(res.data.results || []);
       } else {
-        res = await axios.get(`${API_BASE}/opportunities/`, {
+        res = await axios.get(`${API_BASE}/opportunities`, {
           params: {
             category: category || undefined,
             country: country || undefined,

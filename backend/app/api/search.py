@@ -20,7 +20,7 @@ def python_cosine_similarity(v1: List[float], v2: List[float]) -> float:
         return 0.0
     return dot_product / (norm_a * norm_b)
 
-@router.get("/")
+@router.get("")
 async def semantic_search(
     q: str = Query(..., description="Natural language query"),
     category: Optional[str] = None,

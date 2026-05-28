@@ -8,7 +8,7 @@ from typing import List, Optional
 
 router = APIRouter()
 
-@router.get("/", response_model=List[OpportunityResponse])
+@router.get("", response_model=List[OpportunityResponse])
 async def list_opportunities(
     category: Optional[str] = None,
     country: Optional[str] = None,
