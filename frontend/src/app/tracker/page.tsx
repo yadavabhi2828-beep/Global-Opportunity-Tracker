@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import Link from "next/link";
 
-const API_BASE = "https://imbalancedly-eternal-rudolf.ngrok-free.dev/api";
+const API_BASE = "https://nice-shoes-learn.loca.lt/api";
 axios.defaults.headers.common['bypass-tunnel-reminder'] = 'true';
 const FIXED_USER_ID = "00000000-0000-0000-0000-000000000000";
 
