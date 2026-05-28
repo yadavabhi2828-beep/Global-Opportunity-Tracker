@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import Link from "next/link";
 
-const API_BASE = "http://localhost:8000/api";
+const API_BASE = "https://strong-hats-jam.loca.lt/api";
 const FIXED_USER_ID = "00000000-0000-0000-0000-000000000000";
 
 const COLUMNS = [
