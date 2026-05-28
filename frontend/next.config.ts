@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["imbalancedly-eternal-rudolf.ngrok-free.dev"],
   async rewrites() {
     return [
       {
