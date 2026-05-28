@@ -10,6 +10,7 @@ import axios from "axios";
 import Link from "next/link";
 
 const API_BASE = "https://strong-hats-jam.loca.lt/api";
+axios.defaults.headers.common['bypass-tunnel-reminder'] = 'true';
 const FIXED_USER_ID = "00000000-0000-0000-0000-000000000000"; // Default user ID for testing
 
 // Fallback items if API is not running
