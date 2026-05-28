@@ -11,6 +11,7 @@ import Link from "next/link";
 
 const API_BASE = "/api";
 axios.defaults.headers.common['bypass-tunnel-reminder'] = 'true';
+axios.defaults.headers.common['ngrok-skip-browser-warning'] = 'true';
 const FIXED_USER_ID = "00000000-0000-0000-0000-000000000000"; // Default user ID for testing
 
 // Fallback items if API is not running
