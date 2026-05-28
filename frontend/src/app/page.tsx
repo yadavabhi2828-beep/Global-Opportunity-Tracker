@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { 
   Search, Compass, LayoutDashboard, MapPin, Clock, SlidersHorizontal, 
   Sparkles, RefreshCw, ExternalLink, Bookmark, CheckCircle2,
-  FileText, Calendar, DollarSign
+  FileText, Calendar, DollarSign, Award
 } from "lucide-react";
 import axios from "axios";
 import Link from "next/link";
@@ -90,6 +90,7 @@ const MOCK_OPPORTUNITIES = [
 
 export default function Home() {
   const [opportunities, setOpportunities] = useState<any[]>([]);
+  const [recommendations, setRecommendations] = useState<any[]>([]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("");
   const [country, setCountry] = useState("");
@@ -108,7 +109,7 @@ export default function Home() {
     try {
       let res;
       if (isSearch && query.trim()) {
-        res = await axios.get(`${API_BASE}/search`, {
+        res = await axios.get(`${API_BASE}/search/`, {
           params: {
             q: query,
             category: category || undefined,
@@ -119,7 +120,7 @@ export default function Home() {
         });
         setOpportunities(res.data.results || []);
       } else {
-        res = await axios.get(`${API_BASE}/opportunities`, {
+        res = await axios.get(`${API_BASE}/opportunities/`, {
           params: {
             category: category || undefined,
             country: country || undefined,
@@ -159,6 +160,14 @@ export default function Home() {
     try {
       const res = await axios.get(`${API_BASE}/applications/user/${FIXED_USER_ID}`);
       setSavedIds(res.data.map((app: any) => app.opportunity_id));
+      
+      // Load AI Centroid Recommendations
+      try {
+        const recRes = await axios.get(`${API_BASE}/search/recommendations/${FIXED_USER_ID}`);
+        setRecommendations(recRes.data.recommendations || []);
+      } catch (recErr) {
+        console.log("Could not load recommendations.");
+      }
     } catch (err) {
       console.log("Could not load application states from backend.");
     }
@@ -367,6 +376,44 @@ export default function Home() {
           </div>
         </header>
 
+        {/* AI Recommendations Panel */}
+        {recommendations.length > 0 && (
+          <section className="glass-panel p-5 border border-purple-500/20 bg-purple-950/5 flex flex-col gap-3">
+            <div className="flex items-center gap-2 text-purple-400 font-headline font-bold text-xs">
+              <Sparkles className="w-4 h-4" />
+              <span>AI Vector Recommendations For You</span>
+            </div>
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {recommendations.map((opp: any) => (
+                <div 
+                  key={opp.id} 
+                  className="min-w-[260px] max-w-[300px] glass-panel bg-[#191b23]/80 p-4 flex flex-col gap-2 hover:border-purple-500/35 transition cursor-pointer"
+                  onClick={() => setSelectedOpp(opp)}
+                >
+                  <div className="flex justify-between items-start gap-2">
+                    <h4 className="font-headline font-semibold text-sm text-white line-clamp-1">{opp.name}</h4>
+                    <span className="text-[8px] uppercase tracking-wide px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                      {opp.category}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-500">{opp.organization}</p>
+                  <p className="text-[11px] text-gray-400 line-clamp-2 leading-relaxed">{opp.description}</p>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      saveOpportunity(opp.id);
+                    }}
+                    className="mt-2 text-[10px] font-semibold text-purple-400 hover:text-purple-300 text-left flex items-center gap-1"
+                  >
+                    <Bookmark className="w-3 h-3" />
+                    <span>Save to Board</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Opportunity Card List Grid */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {loading ? (
@@ -386,7 +433,7 @@ export default function Home() {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex flex-col gap-1">
-                    <h3 className="font-headline font-semibold text-lg text-white group-hover:text-blue-400 line-clamp-1">
+                    <h3 className="font-headline font-semibold text-lg text-white group-hover:text-blue-400 line-clamp-2 min-h-[3.5rem]">
                       {opp.name}
                     </h3>
                     <p className="text-xs text-gray-400">{opp.organization}</p>

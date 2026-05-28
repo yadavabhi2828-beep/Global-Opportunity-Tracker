@@ -309,7 +309,7 @@ export default function Tracker() {
                         </div>
 
                         <div>
-                          <h4 className="font-headline font-semibold text-sm text-white line-clamp-1">{opp.name || "Untitled Program"}</h4>
+                          <h4 className="font-headline font-semibold text-sm text-white line-clamp-2 min-h-[2.5rem]">{opp.name || "Untitled Program"}</h4>
                           <p className="text-[11px] text-gray-500 mt-0.5">{opp.organization || "No listed host"}</p>
                         </div>
 
